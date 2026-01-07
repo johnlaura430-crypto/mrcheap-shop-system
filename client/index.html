@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MrCheap Shop Dashboard - Tanzania</title>
+   <link rel="stylesheet" href="css/style.css">
+   </head>
+<body>
+    <!-- Toggle Button (Mobile Only) -->
+    <button class="toggle-sidebar" id="toggleSidebar">
+        <i class="fas fa-bars"></i>
+    </button>
+
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="logo">
+            <i class="fas fa-store"></i>
+            <h2>MrCheap</h2>
+        </div>
+        
+        <div class="nav-menu">
+            <a href="#" class="nav-item active">
+                <i class="fas fa-tachometer-alt"></i>
+                <span>Dashboard</span>
+            </a>
+            <a href="#" class="nav-item" id="inventoryBtn">
+                <i class="fas fa-boxes"></i>
+                <span>Inventory</span>
+            </a>
+            <a href="#" class="nav-item" id="addProductNavBtn">
+                <i class="fas fa-plus-circle"></i>
+                <span>Add Product</span>
+            </a>
+            <a href="#" class="nav-item" id="purchaseNavBtn">
+                <i class="fas fa-shopping-cart"></i>
+                <span>Make Purchase</span>
+            </a>
+            <a href="#" class="nav-item" id="salesNavBtn">
+                <i class="fas fa-cash-register"></i>
+                <span>Sales</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-chart-bar"></i>
+                <span>Reports</span>
+            </a>
+            <a href="#" class="nav-item">
+                <i class="fas fa-cog"></i>
+                <span>Settings</span>
+            </a>
+        </div>
+        
+        <div class="logout">
+            <button class="logout-btn" id="logoutBtn">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Logout</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="header">
+            <div>
+                <h1>MrCheap Shop Dashboard <span style="color: var(--accent);">TZS</span></h1>
+                <p style="color: var(--gray); margin-top: 5px;">Dar es Salaam, Tanzania | Today: <span id="currentDate"></span></p>
+            </div>
+            <div class="user-info">
+                <div class="user-avatar">A</div>
+                <div>
+                    <h4 style="margin-bottom: 3px;">Shop Manager</h4>
+                    <p style="color: var(--gray); font-size: 0.9rem;">mrcheap@shop.co.tz</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="quick-actions">
+            <div class="action-card add-product" id="quickAddProduct">
+                <div class="action-icon">
+                    <i class="fas fa-plus"></i>
+                </div>
+                <div class="action-info">
+                    <h3>Add Product</h3>
+                    <p>Add new item to inventory</p>
+                </div>
+            </div>
+            
+            <div class="action-card make-purchase" id="quickPurchase">
+                <div class="action-icon">
+                    <i class="fas fa-cart-plus"></i>
+                </div>
+                <div class="action-info">
+                    <h3>Make Purchase</h3>
+                    <p>Buy stock from supplier</p>
+                </div>
+            </div>
+            
+            <div class="action-card today-sales">
+                <div class="action-icon">
+                    <i class="fas fa-dollar-sign"></i>
+                </div>
+                <div class="action-info">
+                    <h3>Today Sales</h3>
+                    <p>TZS 0 | 0 items sold</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory Summary -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2>Inventory Summary</h2>
+                <button class="btn btn-primary" id="viewInventoryBtn">View All</button>
+            </div>
+            <div class="empty-state">
+                <i class="fas fa-boxes"></i>
+                <h3>No products in inventory</h3>
+                <p>Add products to get started</p>
+            </div>
+        </div>
+
+        <!-- Low Stock Alert -->
+        <div class="dashboard-section">
+            <div class="section-header">
+                <h2><i class="fas fa-exclamation-triangle" style="color: var(--warning); margin-right: 10px;"></i> Low Stock Alert</h2>
+                <span class="btn btn-secondary">No Alerts</span>
+            </div>
+            <div class="empty-state">
+                <i class="fas fa-check-circle" style="color: var(--success);"></i>
+                <h3>All items are in stock</h3>
+                <p>Set minimum stock levels to receive alerts</p>
+            </div>
+        </div>
+
+        <!-- Today's Summary -->
+        <div class="dashboard-section" style="background: linear-gradient(135deg, #e8f5e9 0%, #f1f8e9 100%);">
+            <h3><i class="fas fa-chart-line" style="color: var(--primary); margin-right: 10px;"></i> Today's Summary</h3>
+            <div class="form-row" style="margin-top: 20px;">
+                <div style="text-align: center;">
+                    <h1 style="color: var(--primary); font-size: 2.5rem;">TZS 0</h1>
+                    <p style="color: var(--gray);">Total Sales</p>
+                </div>
+                <div style="text-align: center;">
+                    <h1 style="color: var(--accent); font-size: 2.5rem;">0</h1>
+                    <p style="color: var(--gray);">Items Sold</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- ===== MODALS ===== -->
+
+    <!-- Add Product Modal -->
+    <div class="modal" id="addProductModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-plus-circle" style="color: var(--primary); margin-right: 10px;"></i> Add New Product</h2>
+                <button class="close-modal" id="closeProductModal">&times;</button>
+            </div>
+            
+            <form id="productForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName" class="required">Product Name</label>
+                        <input type="text" id="productName" class="form-control" placeholder="e.g., Coca Cola 500ml" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="productCode" class="required">Product Code</label>
+                        <input type="text" id="productCode" class="form-control" placeholder="e.g., COKE-500" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="buyingPrice" class="required">Buying Price (TZS)</label>
+                        <div class="input-with-icon">
+                            <span class="currency">TZS</span>
+                            <input type="number" id="buyingPrice" class="form-control" placeholder="0" required min="0">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="sellingPrice" class="required">Selling Price (TZS)</label>
+                        <div class="input-with-icon">
+                            <span class="currency">TZS</span>
+                            <input type="number" id="sellingPrice" class="form-control" placeholder="0" required min="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="initialStock" class="required">Initial Stock</label>
+                        <input type="number" id="initialStock" class="form-control" placeholder="0" required min="0">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="minStock" class="required">Minimum Stock Alert</label>
+                        <input type="number" id="minStock" class="form-control" placeholder="e.g., 10" required min="1">
+                        <small style="color: var(--gray);">Get alert when stock goes below this</small>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productCategory">Category</label>
+                    <div class="category-management">
+                        <select id="productCategory" class="form-control" style="flex: 1;">
+                            <option value="">Select category</option>
+                            <option value="drinks">Drinks</option>
+                            <option value="snacks">Snacks</option>
+                            <option value="groceries">Groceries</option>
+                            <option value="household">Household</option>
+                            <option value="electronics">Electronics</option>
+                        </select>
+                        <input type="text" id="newCategory" class="form-control" placeholder="New category" style="flex: 1;">
+                        <button type="button" class="btn btn-secondary btn-sm" id="addCategoryBtn">Add</button>
+                    </div>
+                    
+                    <div class="category-tags" id="categoryTags">
+                        <!-- Categories will appear here -->
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productDescription">Description (Optional)</label>
+                    <textarea id="productDescription" class="form-control" rows="3" placeholder="Product details, brand, etc."></textarea>
+                </div>
+                
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" style="flex: 2;">Add Product</button>
+                    <button type="button" class="btn btn-secondary" id="cancelProduct">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Make Purchase Modal -->
+    <div class="modal" id="purchaseModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-cart-plus" style="color: var(--accent); margin-right: 10px;"></i> Make Purchase (Buy Stock)</h2>
+                <button class="close-modal" id="closePurchaseModal">&times;</button>
+            </div>
+            
+            <form id="purchaseForm">
+                <div class="form-group">
+                    <label for="supplierName" class="required">Supplier Name</label>
+                    <input type="text" id="supplierName" class="form-control" placeholder="e.g., Coca Cola Distributor" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="selectProduct" class="required">Select Product</label>
+                    <select id="selectProduct" class="form-control" required>
+                        <option value="">Choose product</option>
+                        <!-- Products will be loaded here -->
+                    </select>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="purchaseQuantity" class="required">Quantity</label>
+                        <input type="number" id="purchaseQuantity" class="form-control" placeholder="0" required min="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="purchasePrice" class="required">Price Per Item (TZS)</label>
+                        <div class="input-with-icon">
+                            <span class="currency">TZS</span>
+                            <input type="number" id="purchasePrice" class="form-control" placeholder="0" required min="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="purchaseNotes">Purchase Notes</label>
+                    <textarea id="purchaseNotes" class="form-control" rows="2" placeholder="Invoice number, delivery details, etc."></textarea>
+                </div>
+                
+                <div class="stock-alert">
+                    <p><i class="fas fa-info-circle" style="color: var(--warning); margin-right: 8px;"></i> <strong>Purchase will increase stock</strong>. This is for buying from suppliers, not selling to customers.</p>
+                </div>
+                
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-primary" style="flex: 2;">Record Purchase</button>
+                    <button type="button" class="btn btn-secondary" id="cancelPurchase">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Inventory Modal -->
+    <div class="modal" id="inventoryModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2><i class="fas fa-boxes" style="color: var(--primary); margin-right: 10px;"></i> Inventory Management</h2>
+                <button class="close-modal" id="closeInventoryModal">&times;</button>
+            </div>
+            
+            <table class="inventory-table">
+                <thead>
+                    <tr>
+                        <th>Code</th>
+                        <th>Product Name</th>
+                        <th>Stock</th>
+                        <th>Buying Price</th>
+                        <th>Selling Price</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody id="inventoryTableBody">
+                    <!-- Inventory items will appear here -->
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: var(--gray);">
+                            <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                            <p>No products in inventory</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            
+            <div class="btn-group" style="margin-top: 20px;">
+                <button class="btn btn-primary" id="addNewFromInventory">Add New Product</button>
+                <button class="btn btn-secondary" id="closeInventoryBtn">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ===== GLOBAL VARIABLES =====
+        let categories = ['drinks', 'snacks', 'groceries', 'household', 'electronics'];
+        let inventory = [];
+        let purchases = [];
+
+        // ===== DOM ELEMENTS =====
+        const sidebar = document.getElementById('sidebar');
+        const toggleSidebar = document.getElementById('toggleSidebar');
+        const addProductNavBtn = document.getElementById('addProductNavBtn');
+        const quickAddProduct = document.getElementById('quickAddProduct');
+        const addProductModal = document.getElementById('addProductModal');
+        const closeProductModal = document.getElementById('closeProductModal');
+        const cancelProduct = document.getElementById('cancelProduct');
+        const purchaseNavBtn = document.getElementById('purchaseNavBtn');
+        const quickPurchase = document.getElementById('quickPurchase');
+        const purchaseModal = document.getElementById('purchaseModal');
+        const closePurchaseModal = document.getElementById('closePurchaseModal');
+        const cancelPurchase = document.getElementById('cancelPurchase');
+        const inventoryBtn = document.getElementById('inventoryBtn');
+        const viewInventoryBtn = document.getElementById('viewInventoryBtn');
+        const inventoryModal = document.getElementById('inventoryModal');
+        const closeInventoryModal = document.getElementById('closeInventoryModal');
+        const closeInventoryBtn = document.getElementById('closeInventoryBtn');
+        const addNewFromInventory = document.getElementById('addNewFromInventory');
+        const logoutBtn = document.getElementById('logoutBtn');
+        const productForm = document.getElementById('productForm');
+        const purchaseForm = document.getElementById('purchaseForm');
+        const addCategoryBtn = document.getElementById('addCategoryBtn');
+        const categoryTags = document.getElementById('categoryTags');
+        const newCategoryInput = document.getElementById('newCategory');
+        const currentDate = document.getElementById('currentDate');
+
+        // ===== INITIALIZATION =====
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            const now = new Date();
+            currentDate.textContent = now.toLocaleDateString('en-TZ', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            
+            // Load categories
+            renderCategories();
+            
+            // Load sample inventory
+            loadSampleInventory();
+            
+            console.log('MrCheap Tanzania Dashboard loaded!');
+            console.log('Add Product button should work now!');
+        });
+
+        // ===== SIDEBAR TOGGLE =====
+        toggleSidebar.addEventListener('click', () => {
+            sidebar.classList.toggle('active');
+        });
+
+        // ===== NAVIGATION =====
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Handle specific nav clicks
+                const text = this.querySelector('span').textContent;
+                if (text === 'Add Product') openAddProductModal();
+                if (text === 'Make Purchase') openPurchaseModal();
+                if (text === 'Inventory') openInventoryModal();
+                if (text === 'Sales') alert('Sales module coming soon!');
+            });
+        });
+
+        // ===== ADD PRODUCT MODAL =====
+        function openAddProductModal() {
+            console.log('Opening Add Product Modal...');
+            addProductModal.classList.add('active');
+            document.getElementById('productName').focus();
+        }
+
+        // Quick Add Product button
+        quickAddProduct.addEventListener('click', function() {
+            console.log('Quick Add Product clicked');
+            openAddProductModal();
+        });
+        
+        // Navigation Add Product button
+        addProductNavBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Nav Add Product clicked');
+            openAddProductModal();
+        });
+
+        function closeAddProductModal() {
+            addProductModal.classList.remove('active');
+            productForm.reset();
+        }
+
+        closeProductModal.addEventListener('click', closeAddProductModal);
+        cancelProduct.addEventListener('click', closeAddProductModal);
+
+        // ===== PURCHASE MODAL =====
+        function openPurchaseModal() {
+            updateProductDropdown();
+            purchaseModal.classList.add('active');
+            document.getElementById('supplierName').focus();
+        }
+
+        quickPurchase.addEventListener('click', openPurchaseModal);
+        purchaseNavBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openPurchaseModal();
+        });
+        
+        function closePurchaseModal() {
+            purchaseModal.classList.remove('active');
+            purchaseForm.reset();
+        }
+
+        closePurchaseModal.addEventListener('click', closePurchaseModal);
+        cancelPurchase.addEventListener('click', closePurchaseModal);
+
+        // ===== INVENTORY MODAL =====
+        function openInventoryModal() {
+            updateInventoryTable();
+            inventoryModal.classList.add('active');
+        }
+
+        viewInventoryBtn.addEventListener('click', openInventoryModal);
+        inventoryBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            openInventoryModal();
+        });
+        
+        closeInventoryModal.addEventListener('click', () => inventoryModal.classList.remove('active'));
+        closeInventoryBtn.addEventListener('click', () => inventoryModal.classList.remove('active'));
+        addNewFromInventory.addEventListener('click', () => {
+            inventoryModal.classList.remove('active');
+            setTimeout(openAddProductModal, 300);
+        });
+
+        // ===== CATEGORY MANAGEMENT =====
+        function renderCategories() {
+            categoryTags.innerHTML = '';
+            categories.forEach(category => {
+                const tag = document.createElement('div');
+                tag.className = 'category-tag';
+                tag.innerHTML = `
+                    ${category.charAt(0).toUpperCase() + category.slice(1)}
+                    <span class="delete-category" data-category="${category}">&times;</span>
+                `;
+                categoryTags.appendChild(tag);
+            });
+            
+            // Add delete handlers
+            document.querySelectorAll('.delete-category').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const cat = this.getAttribute('data-category');
+                    if (confirm(`Delete category "${cat}"?`)) {
+                        categories = categories.filter(c => c !== cat);
+                        renderCategories();
+                        updateCategoryDropdown();
+                    }
+                });
+            });
+        }
+
+        addCategoryBtn.addEventListener('click', function() {
+            const newCat = newCategoryInput.value.trim().toLowerCase();
+            if (newCat && !categories.includes(newCat)) {
+                categories.push(newCat);
+                renderCategories();
+                updateCategoryDropdown();
+                newCategoryInput.value = '';
+                document.getElementById('productCategory').value = newCat;
+            }
+        });
+
+        function updateCategoryDropdown() {
+            const select = document.getElementById('productCategory');
+            select.innerHTML = '<option value="">Select category</option>';
+            categories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat;
+                option.textContent = cat.charAt(0).toUpperCase() + cat.slice(1);
+                select.appendChild(option);
+            });
+        }
+
+        // ===== PRODUCT FORM =====
+        productForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const product = {
+                id: Date.now(),
+                code: document.getElementById('productCode').value.trim(),
+                name: document.getElementById('productName').value.trim(),
+                buyingPrice: parseInt(document.getElementById('buyingPrice').value) || 0,
+                sellingPrice: parseInt(document.getElementById('sellingPrice').value) || 0,
+                stock: parseInt(document.getElementById('initialStock').value) || 0,
+                minStock: parseInt(document.getElementById('minStock').value) || 10,
+                category: document.getElementById('productCategory').value || 'uncategorized',
+                description: document.getElementById('productDescription').value.trim(),
+                dateAdded: new Date().toISOString()
+            };
+            
+            // Add to inventory
+            inventory.push(product);
+            
+            // Show success
+            alert(`✅ Product "${product.name}" added successfully!\nCode: ${product.code}\nStock: ${product.stock}\nBuying: TZS ${product.buyingPrice.toLocaleString()}\nSelling: TZS ${product.sellingPrice.toLocaleString()}`);
+            
+            // Update inventory table
+            updateInventoryTable();
+            updateProductDropdown();
+            
+            // Close modal and reset form
+            closeAddProductModal();
+            
+            // Update dashboard
+            updateDashboard();
+        });
+
+        // ===== PURCHASE FORM =====
+        purchaseForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const purchase = {
+                id: Date.now(),
+                supplier: document.getElementById('supplierName').value.trim(),
+                productId: document.getElementById('selectProduct').value,
+                quantity: parseInt(document.getElementById('purchaseQuantity').value) || 0,
+                price: parseInt(document.getElementById('purchasePrice').value) || 0,
+                notes: document.getElementById('purchaseNotes').value.trim(),
+                date: new Date().toISOString(),
+                total: parseInt(document.getElementById('purchaseQuantity').value) * parseInt(document.getElementById('purchasePrice').value)
+            };
+            
+            // Find product and update stock
+            const productIndex = inventory.findIndex(p => p.id == purchase.productId);
+            if (productIndex !== -1) {
+                inventory[productIndex].stock += purchase.quantity;
+                
+                // Show success
+                alert(`✅ Purchase recorded!\nSupplier: ${purchase.supplier}\nQuantity: ${purchase.quantity}\nTotal: TZS ${purchase.total.toLocaleString()}\n\nStock updated for ${inventory[productIndex].name}`);
+                
+                // Update inventory table
+                updateInventoryTable();
+                updateProductDropdown();
+                
+                // Close modal
+                closePurchaseModal();
+                
+                // Update dashboard
+                updateDashboard();
+            } else {
+                alert('Error: Product not found!');
+            }
+        });
+
+        // ===== INVENTORY FUNCTIONS =====
+        function loadSampleInventory() {
+            // Add some sample products
+            inventory = [
+                {
+                    id: 1,
+                    code: 'COKE-500',
+                    name: 'Coca Cola 500ml',
+                    buyingPrice: 1500,
+                    sellingPrice: 2000,
+                    stock: 24,
+                    minStock: 10,
+                    category: 'drinks',
+                    description: 'Soft drink'
+                },
+                {
+                    id: 2,
+                    code: 'STONY-500',
+                    name: 'Stoney Tangawizi 500ml',
+                    buyingPrice: 1400,
+                    sellingPrice: 1800,
+                    stock: 15,
+                    minStock: 8,
+                    category: 'drinks',
+                    description: 'Ginger soda'
+                }
+            ];
+            updateInventoryTable();
+            updateProductDropdown();
+        }
+
+        function updateInventoryTable() {
+            const tbody = document.getElementById('inventoryTableBody');
+            tbody.innerHTML = '';
+            
+            if (inventory.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center; padding: 40px; color: var(--gray);">
+                            <i class="fas fa-box-open" style="font-size: 2rem; margin-bottom: 10px;"></i>
+                            <p>No products in inventory</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            inventory.forEach(product => {
+                const row = document.createElement('tr');
+                const stockClass = product.stock < product.minStock ? 'stock-low' : 'stock-ok';
+                
+                row.innerHTML = `
+                    <td><strong>${product.code}</strong></td>
+                    <td>${product.name}</td>
+                    <td class="${stockClass}">${product.stock} <small>(${product.minStock} min)</small></td>
+                    <td><span class="currency-badge">TZS ${product.buyingPrice.toLocaleString()}</span></td>
+                    <td><span class="currency-badge">TZS ${product.sellingPrice.toLocaleString()}</span></td>
+                    <td>${product.category.charAt(0).toUpperCase() + product.category.slice(1)}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        function updateProductDropdown() {
+            const select = document.getElementById('selectProduct');
+            select.innerHTML = '<option value="">Choose product</option>';
+            
+            inventory.forEach(product => {
+                const option = document.createElement('option');
+                option.value = product.id;
+                option.textContent = `${product.code} - ${product.name} (Stock: ${product.stock})`;
+                select.appendChild(option);
+            });
+        }
+
+        // ===== DASHBOARD UPDATES =====
+        function updateDashboard() {
+            // Update inventory summary
+            const inventorySection = document.querySelector('.dashboard-section:nth-child(3) .empty-state');
+            if (inventory.length > 0) {
+                inventorySection.innerHTML = `
+                    <i class="fas fa-boxes" style="color: var(--primary);"></i>
+                    <h3>${inventory.length} Products in Inventory</h3>
+                    <p>Total stock value: TZS ${calculateTotalStockValue().toLocaleString()}</p>
+                `;
+            }
+            
+            // Check for low stock alerts
+            const lowStockItems = inventory.filter(p => p.stock < p.minStock);
+            const lowStockSection = document.querySelector('.dashboard-section:nth-child(4)');
+            
+            if (lowStockItems.length > 0) {
+                lowStockSection.querySelector('.section-header span').className = 'btn btn-danger';
+                lowStockSection.querySelector('.section-header span').textContent = `${lowStockItems.length} Alerts`;
+                
+                let alertHTML = '<div style="text-align: left; padding: 20px;">';
+                lowStockItems.forEach(item => {
+                    alertHTML += `
+                        <div style="display: flex; justify-content: space-between; padding: 8px 0; border-bottom: 1px solid #eee;">
+                            <span>${item.name}</span>
+                            <span class="stock-low">${item.stock} left (min: ${item.minStock})</span>
+                        </div>
+                    `;
+                });
+                alertHTML += '</div>';
+                
+                lowStockSection.querySelector('.empty-state').innerHTML = alertHTML;
+            }
+        }
+
+        function calculateTotalStockValue() {
+            return inventory.reduce((total, product) => {
+                return total + (product.stock * product.buyingPrice);
+            }, 0);
+        }
+
+        // ===== LOGOUT =====
+        logoutBtn.addEventListener('click', function() {
+            if (confirm('Are you sure you want to logout?')) {
+                alert('Logged out successfully!');
+                // In real app: redirect to login page
+                // window.location.href = '/login';
+            }
+        });
+
+        // Close modal when clicking outside
+        window.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal')) {
+                e.target.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
