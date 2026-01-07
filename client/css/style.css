@@ -566,4 +566,137 @@
             font-size: 0.85rem;
             font-weight: 500;
         }
+
+       /* Add to your existing CSS */
+
+/* Action buttons in table */
+.action-buttons {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-sm {
+    padding: 5px 10px;
+    font-size: 0.8rem;
+    min-width: 60px;
+}
+
+.btn-edit {
+    background: var(--warning);
+    color: white;
+    border: none;
+}
+
+.btn-edit:hover {
+    background: #e0a800;
+}
+
+.btn-delete {
+    background: var(--danger);
+    color: white;
+    border: none;
+}
+
+.btn-delete:hover {
+    background: #c82333;
+}
+
+/* Profit badges */
+.profit-badge {
+    padding: 3px 8px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-block;
+}
+
+.profit-positive {
+    background: #d4edda;
+    color: #155724;
+}
+
+.profit-negative {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Notifications */
+.notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 20px;
+    border-radius: 8px;
+    color: white;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 9999;
+    min-width: 300px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: slideIn 0.3s ease;
+}
+
+.notification-success {
+    background: var(--success);
+    border-left: 4px solid #1e7e34;
+}
+
+.notification-error {
+    background: var(--danger);
+    border-left: 4px solid #bd2130;
+}
+
+.notification-info {
+    background: var(--primary);
+    border-left: 4px solid var(--secondary);
+}
+
+.notification-close {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    margin-left: auto;
+    font-size: 1.2rem;
+}
+
+.fade-out {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: all 0.3s ease;
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); opacity: 0; }
+    to { transform: translateX(0); opacity: 1; }
+}
+
+/* Loading spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(0,0,0,.1);
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Responsive table */
+@media (max-width: 768px) {
+    .inventory-table {
+        display: block;
+        overflow-x: auto;
+    }
+    
+    .notification {
+        min-width: auto;
+        width: calc(100% - 40px);
+    }
+} 
     </style>
